@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Katalog Dessert</title>
+
+<style>
+:root {
+    --primary: #7c9b92;
+    --light: #dce8e4;
+    --dark: #5f7f76;
+    --white: #ffffff;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to bottom, var(--light), #f8fbfa);
+}
+
+header {
+    background: var(--primary);
+    color: rgba(255, 255, 255, 0.953);
+    text-align: center;
+    padding: 25px 15px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Tambahan untuk logo + nama toko */
+.header-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #d0e9e0;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.header-wrapper img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+}
+
+/* POPUP MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 350px;
+    padding: 20px;
+    border-radius: 20px;
+    text-align: center;
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-content img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 15px;
+    border: 3px solid var(--primary);
+}
+
+.modal-content h2 {
+    margin: 10px 0 5px;
+    color: var(--dark);
+}
+
+.modal-content p {
+    font-size: 14px;
+    color: #555;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--primary);
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: scale(0.8);}
+    to {opacity: 1; transform: scale(1);}
+}
+
+.section-title {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--dark);
+    font-size: 22px;
+}
+
+.description {
+    text-align: center;
+    max-width: 600px;
+    margin: 10px auto 30px;
+    padding: 0 20px;
+    color: #555;
+    font-size: 14px;
+}
+
+.menu-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.menu-item {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 15px;
+    text-align: center;
+    border: 2px solid var(--primary);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+    transition: 0.3s;
+    position: relative;
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+}
+
+.menu-item img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 15px;
+    border: 3px solid var(--primary);
+}
+
+.menu-item h3 {
+    margin-top: 10px;
+    color: var(--dark);
+    font-size: 20px;
+}
+
+.menu-item::before {
+    content: "❀";
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    font-size: 18px;
+    color: var(--primary);
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    background: var(--primary);
+    color: white;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+}
+
+/* ===== CAROUSEL BANNER ===== */
+.carousel {
+    position: relative;
+    width: 100%;
+    max-height: 250px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide {
+    min-width: 100%;
+    cursor: pointer;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.4);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 50%;
+}
+
+.carousel-btn.left { left: 10px; }
+.carousel-btn.right { right: 10px; }
+
+/* ===== LAYOUT WRAPPER ===== */
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* ===== HEADER BARU (lebih clean seperti contoh) ===== */
+header {
+    background: #5f7f76;
+    color: #333;
+    padding: 15px 30px;
+    border-radius: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo + Nama */
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-area img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.logo-area h1 {
+    font-size: 22px;
+    margin: 0;
+    color: var(--dark);
+}
+
+/* Navigation */
+.nav-menu {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #555; 
+    transition: 0.3s;
+}
+
+.nav-menu a:hover {
+    color: var(--primary);
+}
+
+/* Banner supaya pas tengah */
+.carousel {
+    max-width: 1200px;
+    margin: 20px auto;
+    border-radius: 20px;
+}
+
+/* Section agar rata tengah */
+.section-title,
+.menu-container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+    <div class="header-wrapper">
+        <img src="cakeylogo.png" alt="Logo">
+        <h1>❀ Menu Dessert ❀</h1>
+    </div>
+    <p>Green Sweety Coded!</p>
+</header>
+
+<!-- ===== BANNER CAROUSEL ===== -->
+<div class="carousel">
+    <div class="carousel-track" id="carouselTrack">
+        <div class="carousel-slide" data-title="Yogurt">
+            <img src="Yogurt.jpg" alt="Banner 1">
+        </div>
+        <div class="carousel-slide" data-title="Souffle">
+            <img src="Suflé.jpg" alt="Banner 2">
+        </div>
+        <div class="carousel-slide" data-title="Mousse">
+            <img src="Mousse.jpg" alt="Banner 3">
+        </div>
+    </div>
+    <button class="carousel-btn left" onclick="moveSlide(-1)">❮</button>
+    <button class="carousel-btn right" onclick="moveSlide(1)">❯</button>
+</div>
+
+<!-- HOT DESSERT -->
+<h2 class="section-title"> Hot Dessert </h2>
+<p class="description">
+</p>
+
+<div class="menu-container">
+    <div class="menu-item"><img src="pancake.jpg"><h3>Pancake</h3></div>
+    <div class="menu-item"><img src="waffle.jpg"><h3>Waffle</h3></div>
+    <div class="menu-item"><img src="Suflé.jpg"><h3>Souffle</h3></div>
+    <div class="menu-item"><img src="applepie.jpg"><h3>Apple Pie</h3></div>
+    <div class="menu-item"><img src="churros.jpg"><h3>Churros</h3></div>
+    <div class="menu-item"><img src="crepes.jpg"><h3>Crepes</h3></div>
+    <div class="menu-item"><img src="lavacake.jpg"><h3>Lava Cake</h3></div>
+    <div class="menu-item"><img src="bananaflambe.jpg"><h3>Banana Flambe</h3></div>
+</div>
+
+<!-- COLD DESSERT -->
+<h2 class="section-title"> Cold Dessert </h2>
+<p class="description">
+</p>
+
+<div class="menu-container">
+    <div class="menu-item"><img src="Pudding.jpg"><h3>Puding</h3></div>
+    <div class="menu-item"><img src="Mousse.jpg"><h3>Mousse</h3></div>
+    <div class="menu-item"><img src="custard.jpg"><h3>Custard</h3></div>
+    <div class="menu-item"><img src="tiramisu.jpg"><h3>Tiramisu</h3></div>
+    <div class="menu-item"><img src="saladbuah.jpg"><h3>Salad Buah</h3></div>
+    <div class="menu-item"><img src="cake.jpg"><h3>Cake</h3></div>
+    <div class="menu-item"><img src="creampuff.jpg"><h3>Cream Puff</h3></div>
+    <div class="menu-item"><img src="pannacotta.jpg"><h3>Panna Cotta</h3></div>
+</div>
+
+<!-- FROZEN DESSERT -->
+<h2 class="section-title"> Frozen Dessert </h2>
+<p class="description">
+</p>
+
+<div class="menu-container">
+    <div class="menu-item"><img src="icecream.jpg"><h3>Es Krim</h3></div>
+    <div class="menu-item"><img src="gelato.jpg"><h3>Gelato</h3></div>
+    <div class="menu-item"><img src="sorbet.jpg"><h3>Sorbet</h3></div>
+    <div class="menu-item"><img src="Sherbet.jpg"><h3>Sherbet</h3></div>
+    <div class="menu-item"><img src="Yogurt.jpg"><h3>Yogurt</h3></div>
+    <div class="menu-item"><img src="slushie.jpg"><h3>Slushie</h3></div>
+    <div class="menu-item"><img src="granitas.jpg"><h3>Granita</h3></div>
+    <div class="menu-item"><img src="popsicle.jpg"><h3>Popsicle</h3></div>
+
+</div>
+
+<!-- MODAL POPUP -->
+<div class="modal" id="dessertModal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">×</span>
+        <img id="modalImg" src="">
+        <h2 id="modalTitle"></h2>
+        <p id="modalPrice"></p>
+        <p id="modalIngredients"></p>
+    </div>
+</div>
+
+<script>
+
+/* ===== CAROUSEL LOGIC ===== */
+let currentIndex = 0;
+const track = document.getElementById("carouselTrack");
+const slides = document.querySelectorAll(".carousel-slide");
+const totalSlides = slides.length;
+
+function updateSlide() {
+    track.style.transform = "translateX(-" + currentIndex * 100 + "%)";
+}
+
+function moveSlide(direction) {
+    currentIndex += direction;
+    if (currentIndex < 0) currentIndex = totalSlides - 1;
+    if (currentIndex >= totalSlides) currentIndex = 0;
+    updateSlide();
+}
+
+/* Auto slide setiap 4 detik */
+setInterval(() => {
+    moveSlide(1);
+}, 4000);
+
+/* Klik banner → popup */
+slides.forEach(slide => {
+    slide.addEventListener("click", () => {
+        const title = slide.getAttribute("data-title");
+        document.getElementById("modalTitle").innerText = title;
+        document.getElementById("modalImg").src = slide.querySelector("img").src;
+        document.getElementById("modalPrice").innerText = "Harga: " + dessertData[title].price;
+        document.getElementById("modalIngredients").innerText = "Ingredients: " + dessertData[title].ingredients;
+        document.getElementById("dessertModal").style.display = "flex";
+    });
+});
+
+const menuItems = document.querySelectorAll(".menu-item");
+
+const dessertData = {
+    "Pancake": {price: "Rp 58.000", ingredients: "[flour, baking powder, sea salt, creamy milk, farm-fresh egg, melted unsalted butter, pure vanilla extract for a nostalgic aroma]"},
+    "Waffle": {price: "Rp 62.000", ingredients: "[high-protein flour, brown sugar, baking soda, buttermilk, free-range eggs, vegetable oil, a touch of honey, pure vanilla extract for a warm buttery aroma]"},
+    "Souffle": {price: "Rp 98.000", ingredients: "[fine cake flour, a pinch of sea salt, warm creamy milk, farm-fresh egg yolks, whipped egg whites, melted unsalted butter, pure vanilla extract for a delicate aroma]"},
+    "Apple Pie": {price: "Rp 55.000", ingredients: "[flour, chilled unsalted butter, a pinch of sea salt, fresh green apples, brown sugar, ground cinnamon, pure vanilla extract for a warm nostalgic aroma]"},
+    "Churros": {price: "Rp 48.000", ingredients: "[flour, water, melted unsalted butter, farm-fresh egg, a pinch of sea salt, fine sugar, ground cinnamon for a sweet comforting aroma]"},
+    "Crepes": {price: "Rp 59.000", ingredients: "[flour, creamy milk, farm-fresh eggs, melted unsalted butter, a pinch of sea salt, pure vanilla extract for a soft fragrant aroma]"},
+    "Lava Cake": {price: "Rp 72.000", ingredients: "[dark chocolate couverture, unsalted butter, fine sugar, farm-fresh eggs, all-purpose flour, a pinch of sea salt, pure vanilla extract for an indulgent aroma"},
+    "Banana Flambe": {price: "Rp 85.000", ingredients: "[ripe bananas, unsalted butter, brown sugar, a splash of dark rum, ground cinnamon, fresh orange zest for a caramelized aromatic finish]"},
+
+    "Puding": {price: "Rp 38.000", ingredients: "[smooth whole milk, fine granulated sugar, premium gelatin powder, fragrant vanilla extract, silky coconut milk, a pinch of sea salt for balance]"},
+    "Mousse": {price: "Rp 68.000", ingredients: "[rich dark chocolate, fresh heavy cream, farm-fresh egg yolks, fine caster sugar, light whipped cream, pure vanilla essence for a delicate aroma]"},
+    "Custard": {price: "Rp 65.000", ingredients: "[creamy whole milk, golden egg yolks, fine white sugar, fragrant vanilla bean, a touch of cornstarch for smooth thickness, a pinch of sea salt]"},
+    "Tiramisu": {price: "Rp 75.000", ingredients: "[soft ladyfinger biscuits, bold brewed espresso, mascarpone cheese, fresh egg yolks, fine sugar, premium cocoa powder, a splash of coffee liqueur]"},
+    "Salad Buah": {price: "Rp 42.000", ingredients: "[assorted fresh seasonal fruits, sweetened condensed milk, creamy mayonnaise, freshly grated cheese, silky yogurt, a drizzle of honey for natural sweetness]"},
+    "Cake": {price: "Rp 68.000", ingredients: "[premium cake flour, fresh eggs, fine granulated sugar, creamy unsalted butter, full-cream milk, baking powder, pure vanilla extract for a warm aroma]"},
+    "Cream Puff": {price: "Rp 45.000", ingredients: "[light choux pastry dough, fresh eggs, unsalted butter, pure water, fine flour, silky vanilla pastry cream, a dusting of powdered sugar]"},
+    "Panna Cotta": {price: "Rp 63.000", ingredients: "[fresh heavy cream, whole milk, fine sugar, premium gelatin, fragrant vanilla bean, berry compote for a vibrant finish]"},
+
+    "Es Krim": {price: "Rp 36.000", ingredients: "[rich fresh milk, heavy cream, fine sugar, egg yolks, pure vanilla extract, natural flavor infusion of choice]"},
+    "Gelato": {price: "Rp 52.000", ingredients: "[full-cream milk, less heavy cream for density, fine sugar, egg yolks, natural flavor paste, stabilizer for silky texture]"},
+    "Sorbet": {price: "Rp 48.000", ingredients: "[fresh fruit puree, pure cane sugar syrup, filtered water, a squeeze of fresh lemon juice for brightness]"},
+    "Sherbet": {price: "Rp 46.000", ingredients: "[fruit puree, light milk, fine sugar, fresh cream, lemon juice, a touch of zest for a refreshing kick]"},
+    "Yogurt": {price: "Rp 49.000", ingredients: "[fresh whole milk, live active cultures, a spoonful of starter yogurt, natural sweetener, fresh fruit topping]"},
+    "Slushie": {price: "Rp 32.000", ingredients: "[crushed ice, fruit syrup, sparkling soda or fruit juice, fresh fruit slices, a splash of citrus juice]"},
+    "Granita": {price: "Rp 39.000", ingredients: "[fresh fruit juice or brewed coffee, fine sugar syrup, filtered water, a hint of lemon zest for freshness]"},
+    "Popsicle": {price: "Rp 28.000", ingredients: "[fresh fruit puree, natural sweetener, coconut water or fruit juice base, small fruit chunks, a squeeze of lime for balance]"},
+};
+
+menuItems.forEach(item => {
+    item.addEventListener("click", () => {
+        const title = item.querySelector("h3").innerText;
+        document.getElementById("modalTitle").innerText = title;
+        document.getElementById("modalImg").src = item.querySelector("img").src;
+        document.getElementById("modalPrice").innerText = "Harga: " + dessertData[title].price;
+        document.getElementById("modalIngredients").innerText = "Ingredients: " + dessertData[title].ingredients;
+        document.getElementById("dessertModal").style.display = "flex";
+    });
+});
+
+function closeModal() {
+    document.getElementById("dessertModal").style.display = "none";
+}
+
+window.onclick = function(event) {
+    const modal = document.getElementById("dessertModal");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+
+<footer>
+    © 2026 Green Bakery | Fresh & Sweet
+</footer>
+
+</body>
+</html>
